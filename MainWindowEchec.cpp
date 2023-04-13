@@ -1,0 +1,187 @@
+#include <iostream>
+#include <string>
+#include <QTableWidget>
+#include <QMessageBox>
+#include <QPixmap>
+#include <qscreen.h>
+#include <QLabel>
+
+#include "MainWindowEchec.h"
+#include "ui_MainWindowEchec.h"
+
+MainWindowEchec::MainWindowEchec(QWidget* parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindowEchec)
+
+{
+    ui->setupUi(this);
+
+
+    connect(ui->tableWidget, SIGNAL(cellClicked(int, int)), this, SLOT(deplacementPiece(int, int)));
+    connect(ui->resetButton, SIGNAL(clicked()), this, SLOT(remettreJeuxInitiale()));
+    connect(ui->listeNoire, SIGNAL(cellClicked(int, int)), this, SLOT(promotionNoir(int, int)));
+    connect(ui->listeBlanche, SIGNAL(cellClicked(int, int)), this, SLOT(promotionBlanc(int, int)));
+
+/*
+    connect(ui->tableWidget, &QTableWidget::cellClicked, this, &YourClassName::deplacementPiece);
+    connect(ui->resetButton, &QPushButton::clicked, this, &YourClassName::remettreJeuxInitiale);
+    connect(ui->listeNoire, &QTableWidget::cellClicked, this, &YourClassName::promotionNoir);
+    connect(ui->listeBlanche, &QTableWidget::cellClicked, this, &YourClassName::promotionBlanc);
+*/
+
+    initialisationFenetre();
+}
+
+void MainWindowEchec::initialisationFenetre(){
+        ui->gridLayout->setAlignment(ui->tableWidget, Qt::AlignCenter);
+
+        ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        ui->tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        ui->tableWidget->verticalHeader()->setFixedWidth(25);
+        ui->tableWidget->horizontalHeader()->setFixedHeight(35);
+
+        int tailleHorizontaleListeBlanche = 0;
+        for (int col = 0; col < ui->listeBlanche->columnCount(); ++col) {
+            tailleHorizontaleListeBlanche += ui->listeBlanche->horizontalHeader()->sectionSize(col);
+        }
+
+        int tailleVerticaleListeBlanche = 0;
+        for (int row = 0; row < ui->listeBlanche->rowCount(); ++row) {
+            tailleVerticaleListeBlanche += ui->listeBlanche->verticalHeader()->sectionSize(row);
+        }
+
+        ui->listeBlanche->setMaximumWidth(tailleHorizontaleListeBlanche);
+        ui->listeBlanche->setMaximumHeight(tailleVerticaleListeBlanche);
+
+        int tailleHorizontaleListeNoire = 0;
+        for (int col = 0; col < ui->listeNoire->columnCount(); ++col) {
+            tailleHorizontaleListeNoire += ui->listeNoire->horizontalHeader()->sectionSize(col);
+        }
+
+        int tailleVerticaleListeNoire = 0;
+        for (int row = 0; row < ui->listeNoire->rowCount(); ++row) {
+            tailleVerticaleListeNoire += ui->listeNoire->verticalHeader()->sectionSize(row);
+        }
+
+        ui->listeNoire->setMaximumWidth(tailleHorizontaleListeNoire);
+        ui->listeNoire->setMaximumHeight(tailleVerticaleListeNoire);
+
+        ui->tableWidget->setSelectionMode(QAbstractItemView::NoSelection);
+        ui->resetButton->setStyleSheet("background : rgba(94,94,94)");
+
+
+
+
+
+        ui->listeBlanche->setIconSize(QSize(25, 25));
+        ui->listeNoire->setIconSize(QSize(25, 25));
+
+        QString message = QString("Turn : <font color = #FF7676 > White < / font>");
+
+        //ui->tourRole->setText(message);
+
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 2; j++) {
+                QTableWidgetItem* itemBlanc = new QTableWidgetItem;
+                itemBlanc->setIcon(QIcon());
+                QTableWidgetItem* itemNoir = new QTableWidgetItem;
+                itemNoir->setIcon(QIcon());
+                ui->listeBlanche->setItem(i, j, itemBlanc);
+                ui->listeNoire->setItem(i, j, itemNoir);
+            }
+        }
+    }
+
+void MainWindowEchec::MakeActive(){
+        raise();
+        this->show();
+        this->activateWindow();
+        this->raise();
+}
+
+void MainWindowEchec::resizeEvent(QResizeEvent* event)
+{
+        cout << "Height " << this->size().height() << endl;
+        cout << "Width" << this->size().width() << endl;
+
+        int tailleHorizontaleTableWidget = ui->tableWidget->horizontalHeader()->sectionSize(0);
+        int tailleVerticaleTableWidget = ui->tableWidget->verticalHeader()->sectionSize(0);
+        int nouvelleTailleHorizontale = (25 * tailleHorizontaleTableWidget) / 30;
+
+
+        ui->tableWidget->setIconSize(QSize(nouvelleTailleHorizontale, tailleVerticaleTableWidget));
+        QMainWindow::resizeEvent(event);
+}
+bool MainWindowEchec::caseNoir(Position position) {
+        if (position.x % 2 == 0) {
+            if (position.y % 2 == 0) {
+
+                return true;
+            }
+            else {
+
+                return false;
+
+            }
+        }
+        else {
+            if (position.y % 2 == 0) {
+
+                return false;
+
+            }
+            else {
+
+                return true;
+
+            }
+        }
+
+}
+void MainWindowEchec::remettreJeuxInitiale() {
+        if (premierClic == false) {
+           // remettreCouleurCaseAvant();
+            listeCaseColoriee.clear();
+        }
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 2; j++) {
+                if (plateau->listeEquipeBlanc[i][j] != nullptr) {
+                    auto item = ui->listeBlanche->item(i, j);
+                    item->setIcon(QIcon());
+
+                }
+                if (plateau->listeEquipeNoir[i][j] != nullptr) {
+                    auto item = ui->listeNoire->item(i, j);
+                    item->setIcon(QIcon());
+                }
+            }
+        }
+
+        for (auto&& piece : plateau->listePieceBlanc) {
+            auto item = ui->tableWidget->item(piece.second->getPosition().x, piece.second->getPosition().y-1);
+            item->setIcon(QIcon());
+        }
+
+        for (auto&& piece : plateau->listePieceNoir) {
+            auto item = ui->tableWidget->item(piece.second->getPosition().x, piece.second->getPosition().y-1);
+            item->setIcon(QIcon());
+        }
+
+
+        //plateau->resetGame();
+        tourBlanc = true;
+        premierClic = true;
+
+        ui->tableWidget->item(0, 4)->setIcon(QIcon(":/Ressource/image/roiBlanc.png"));
+
+        ui->tableWidget->item(7, 4)->setIcon(QIcon(":/Ressource/image/roiNoir.png"));
+
+
+
+}
+MainWindowEchec::~MainWindowEchec() {
+        delete ui;
+}
+
