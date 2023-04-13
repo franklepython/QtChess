@@ -5,6 +5,8 @@
 #include <QPixmap>
 #include <qscreen.h>
 #include <QLabel>
+#include <QBrush>
+#include <QColor>
 
 #include "MainWindowEchec.h"
 #include "ui_MainWindowEchec.h"
@@ -33,6 +35,7 @@ MainWindowEchec::MainWindowEchec(QWidget* parent)
 }
 
 void MainWindowEchec::initialisationFenetre(){
+
         ui->gridLayout->setAlignment(ui->tableWidget, Qt::AlignCenter);
 
         ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
@@ -62,6 +65,17 @@ void MainWindowEchec::initialisationFenetre(){
         for (int row = 0; row < ui->listeNoire->rowCount(); ++row) {
             tailleVerticaleListeNoire += ui->listeNoire->verticalHeader()->sectionSize(row);
         }
+        for (int row = 0; row < ui->tableWidget->rowCount(); ++row) {
+            for (int col = 0; col < ui->tableWidget->columnCount(); ++col) {
+                QTableWidgetItem* item = new QTableWidgetItem;
+                ui->tableWidget->setItem(row, col, item);
+
+                // Set the background color for the black squares
+                if ((row + col) % 2 != 0) {
+                    item->setBackground(QBrush(QColor(0, 0, 0))); // Set the background color to black
+                }
+            }
+        }
 
         ui->listeNoire->setMaximumWidth(tailleHorizontaleListeNoire);
         ui->listeNoire->setMaximumHeight(tailleVerticaleListeNoire);
@@ -79,8 +93,15 @@ void MainWindowEchec::initialisationFenetre(){
         QString message = QString("Turn : <font color = #FF7676 > White < / font>");
 
         //ui->tourRole->setText(message);
-
-
+        for (int row = 0; row < ui->tableWidget->rowCount(); ++row) {
+            for (int col = 0; col < ui->tableWidget->columnCount(); ++col) {
+                QTableWidgetItem* item = new QTableWidgetItem;
+                ui->tableWidget->setItem(row, col, item);
+            }
+        }
+        ui->tableWidget->viewport()->update();
+}
+/*
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 2; j++) {
                 QTableWidgetItem* itemBlanc = new QTableWidgetItem;
@@ -90,8 +111,8 @@ void MainWindowEchec::initialisationFenetre(){
                 ui->listeBlanche->setItem(i, j, itemBlanc);
                 ui->listeNoire->setItem(i, j, itemNoir);
             }
-        }
-    }
+        }*/
+ 
 
 void MainWindowEchec::MakeActive(){
         raise();
@@ -142,9 +163,9 @@ bool MainWindowEchec::caseNoir(Position position) {
 void MainWindowEchec::remettreJeuxInitiale() {
         if (premierClic == false) {
            // remettreCouleurCaseAvant();
-            listeCaseColoriee.clear();
+           // listeCaseColoriee.clear();
         }
-
+        
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 2; j++) {
                 if (plateau->listeEquipeBlanc[i][j] != nullptr) {
@@ -158,7 +179,7 @@ void MainWindowEchec::remettreJeuxInitiale() {
                 }
             }
         }
-
+        /*
         for (auto&& piece : plateau->listePieceBlanc) {
             auto item = ui->tableWidget->item(piece.second->getPosition().x, piece.second->getPosition().y-1);
             item->setIcon(QIcon());
@@ -167,16 +188,33 @@ void MainWindowEchec::remettreJeuxInitiale() {
         for (auto&& piece : plateau->listePieceNoir) {
             auto item = ui->tableWidget->item(piece.second->getPosition().x, piece.second->getPosition().y-1);
             item->setIcon(QIcon());
+        }*/
+
+        //Mettre le tout en noir
+        for (int row = 0; row < ui->tableWidget->rowCount(); ++row) {
+            for (int col = 0; col < ui->tableWidget->columnCount(); ++col) {
+                QTableWidgetItem* item = new QTableWidgetItem;
+                ui->tableWidget->setItem(row, col, item);
+                if ((row + col) % 2 != 0) {
+                    item->setBackground(QBrush(QColor(0, 0, 0))); 
+                }
+            }
         }
+
+
+
 
 
         //plateau->resetGame();
         tourBlanc = true;
         premierClic = true;
 
-        ui->tableWidget->item(0, 4)->setIcon(QIcon(":/Ressource/image/roiBlanc.png"));
+       // ui->tableWidget->item(0, 4)->setIcon(QIcon("RoiBleu.png"));
+        ui->tableWidget->item(0, 4)->setText("Patrice le Roi");
+        ui->tableWidget->item(7, 4)->setText("Francis le Roi");
 
-        ui->tableWidget->item(7, 4)->setIcon(QIcon(":/Ressource/image/roiNoir.png"));
+
+        //ui->tableWidget->item(7, 4)->setIcon(QIcon(":/Ressource/image/roiNoir.png"));
 
 
 
