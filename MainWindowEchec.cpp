@@ -34,6 +34,19 @@ MainWindowEchec::MainWindowEchec(QWidget* parent)
     initialisationFenetre();
 }
 
+void MainWindowEchec::mettreLeToutEnNoir() {
+    //Mettre le tout en noir
+    for (int row = 0; row < ui->tableWidget->rowCount(); ++row) {
+        for (int col = 0; col < ui->tableWidget->columnCount(); ++col) {
+            QTableWidgetItem* item = new QTableWidgetItem;
+            ui->tableWidget->setItem(row, col, item);
+            if ((row + col) % 2 != 0) {
+                item->setBackground(QBrush(QColor(0, 0, 0)));
+            }
+        }
+    }
+}
+
 void MainWindowEchec::initialisationFenetre(){
 
         ui->gridLayout->setAlignment(ui->tableWidget, Qt::AlignCenter);
@@ -99,7 +112,11 @@ void MainWindowEchec::initialisationFenetre(){
                 ui->tableWidget->setItem(row, col, item);
             }
         }
+
+        mettreLeToutEnNoir();
+
         ui->tableWidget->viewport()->update();
+
 }
 /*
         for (int i = 0; i < 8; i++) {
@@ -134,32 +151,8 @@ void MainWindowEchec::resizeEvent(QResizeEvent* event)
         ui->tableWidget->setIconSize(QSize(nouvelleTailleHorizontale, tailleVerticaleTableWidget));
         QMainWindow::resizeEvent(event);
 }
-bool MainWindowEchec::caseNoir(Position position) {
-        if (position.x % 2 == 0) {
-            if (position.y % 2 == 0) {
 
-                return true;
-            }
-            else {
 
-                return false;
-
-            }
-        }
-        else {
-            if (position.y % 2 == 0) {
-
-                return false;
-
-            }
-            else {
-
-                return true;
-
-            }
-        }
-
-}
 void MainWindowEchec::remettreJeuxInitiale() {
         if (premierClic == false) {
            // remettreCouleurCaseAvant();
@@ -190,20 +183,7 @@ void MainWindowEchec::remettreJeuxInitiale() {
             item->setIcon(QIcon());
         }*/
 
-        //Mettre le tout en noir
-        for (int row = 0; row < ui->tableWidget->rowCount(); ++row) {
-            for (int col = 0; col < ui->tableWidget->columnCount(); ++col) {
-                QTableWidgetItem* item = new QTableWidgetItem;
-                ui->tableWidget->setItem(row, col, item);
-                if ((row + col) % 2 != 0) {
-                    item->setBackground(QBrush(QColor(0, 0, 0))); 
-                }
-            }
-        }
-
-
-
-
+        mettreLeToutEnNoir();
 
         //plateau->resetGame();
         tourBlanc = true;
@@ -211,8 +191,8 @@ void MainWindowEchec::remettreJeuxInitiale() {
 
        // ui->tableWidget->item(0, 4)->setIcon(QIcon("RoiBleu.png"));
         ui->tableWidget->item(0, 4)->setText("Patrice le Roi");
-        ui->tableWidget->item(7, 4)->setText("Francis le Roi");
-
+        ui->tableWidget->item(7, 3)->setText("Francis le Roi");
+            
 
         //ui->tableWidget->item(7, 4)->setIcon(QIcon(":/Ressource/image/roiNoir.png"));
 
@@ -223,3 +203,10 @@ MainWindowEchec::~MainWindowEchec() {
         delete ui;
 }
 
+bool MainWindowEchec::couleurDifferentes(shared_ptr<Piece> const piece1, shared_ptr<Piece> const piece2) const {
+    if (piece1->getCouleur() == piece2->getCouleur()) {
+        return false;
+    }
+
+    return true;
+}
