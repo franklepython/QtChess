@@ -2,7 +2,7 @@
 #include "MainWindowEchec.h"
 
 #include <QApplication>
-#include <QDesktopWidget>
+//#include <QDesktopWidget>
 #include <qguiapplication.h>
 
 #include <iostream>
