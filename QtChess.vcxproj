@@ -192,6 +192,7 @@
     <ClCompile Include="Echequier.cpp" />
     <ClCompile Include="MainWindowEchec.cpp" />
     <ClCompile Include="Piece.cpp" />
+    <ClCompile Include="Pion.cpp" />
     <ClCompile Include="Roi.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="nouvellePartie.cpp" />
@@ -202,6 +203,7 @@
     <QtMoc Include="MainWindowEchec.h">
     </QtMoc>
     <ClInclude Include="Piece.h" />
+    <ClInclude Include="Pion.h" />
     <ClInclude Include="Roi.h" />
     <QtMoc Include="nouvellePartie.h">
     </QtMoc>
