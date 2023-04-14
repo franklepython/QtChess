@@ -9,6 +9,7 @@
 
 using namespace std;
 
+// Modele
 class Piece {
 public:
     Piece();
@@ -19,6 +20,9 @@ public:
     string getSymbole();
     Couleur getCouleur();
     Position getPosition();
+    virtual bool movementEstValide(const Position pos) const = 0;
+
+
 
 protected:
     friend class Echequier;
