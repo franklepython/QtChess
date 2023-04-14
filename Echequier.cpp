@@ -18,6 +18,12 @@ unique_ptr<Echequier> Echequier::getEchequier(){
         plateau = make_unique<Echequier>(Echequier());
     return std::move(plateau);
 }
+
+
+vector<vector<shared_ptr<Piece>>> Echequier:: getTableauEchec() const {
+    return tableauEchec;
+}
+
 /*bool Echequier::mouvementPiece(shared_ptr<Piece>& piece, Position position){
     Position anciennePosition = piece->getPosition();
     auto autrePiece = tableauEchec[position.x][position.y];
@@ -35,9 +41,6 @@ unique_ptr<Echequier> Echequier::getEchequier(){
 
     return true;
 }*/
-
-
-
 
 
 
