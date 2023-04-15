@@ -1,3 +1,4 @@
+//Echequier.h
 #pragma once
 #include "Ajout.h"
 

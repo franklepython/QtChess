@@ -1,17 +1,9 @@
+//Echequier.cpp
 #include "Echequier.h"
 #include "Piece.h"
 #include "Roi.h"
 #include <iostream>
 #include <string>
-
-/*
-void initialisationJeu();
-void initialisationPosition(Position poisition, shared_ptr<Piece> piece);
-void eliminationPiece(Position position);
-static unique_ptr<Echequier> getEchequier();
-bool mouvementPiece(shared_ptr<Piece>& piece, Position position);
-const shared_ptr<Piece> getPiece(int x, int y);
-*/
 
 unique_ptr<Echequier> Echequier::getEchequier(){
     if (plateau == nullptr)
