@@ -14,28 +14,18 @@
 MainWindowEchec::MainWindowEchec(QWidget* parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindowEchec)
-
 {
     ui->setupUi(this);
-
 
     connect(ui->tableWidget, SIGNAL(cellClicked(int, int)), this, SLOT(deplacementPiece(int, int)));
     connect(ui->resetButton, SIGNAL(clicked()), this, SLOT(remettreJeuxInitiale()));
     connect(ui->listeNoire, SIGNAL(cellClicked(int, int)), this, SLOT(promotionNoir(int, int)));
     connect(ui->listeBlanche, SIGNAL(cellClicked(int, int)), this, SLOT(promotionBlanc(int, int)));
-
-/*
-    connect(ui->tableWidget, &QTableWidget::cellClicked, this, &YourClassName::deplacementPiece);
-    connect(ui->resetButton, &QPushButton::clicked, this, &YourClassName::remettreJeuxInitiale);
-    connect(ui->listeNoire, &QTableWidget::cellClicked, this, &YourClassName::promotionNoir);
-    connect(ui->listeBlanche, &QTableWidget::cellClicked, this, &YourClassName::promotionBlanc);
-*/
-
+    
     initialisationFenetre();
 }
 
 void MainWindowEchec::mettreLeToutEnNoir() {
-    //Mettre le tout en noir
     for (int row = 0; row < ui->tableWidget->rowCount(); ++row) {
         for (int col = 0; col < ui->tableWidget->columnCount(); ++col) {
             QTableWidgetItem* item = new QTableWidgetItem;
@@ -47,88 +37,109 @@ void MainWindowEchec::mettreLeToutEnNoir() {
     }
 }
 
-void MainWindowEchec::initialisationFenetre(){
+void MainWindowEchec::initialisationFenetre() {
+    premierClic = true;
+    ui->gridLayout->setAlignment(ui->tableWidget, Qt::AlignCenter);
 
-        ui->gridLayout->setAlignment(ui->tableWidget, Qt::AlignCenter);
+    ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableWidget->verticalHeader()->setFixedWidth(25);
+    ui->tableWidget->horizontalHeader()->setFixedHeight(35);
 
-        ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-        ui->tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-        ui->tableWidget->verticalHeader()->setFixedWidth(25);
-        ui->tableWidget->horizontalHeader()->setFixedHeight(35);
+    int tailleHorizontaleListeBlanche = 0;
+    for (int col = 0; col < ui->listeBlanche->columnCount(); ++col) {
+        tailleHorizontaleListeBlanche += ui->listeBlanche->horizontalHeader()->sectionSize(col);
+    }
 
-        int tailleHorizontaleListeBlanche = 0;
-        for (int col = 0; col < ui->listeBlanche->columnCount(); ++col) {
-            tailleHorizontaleListeBlanche += ui->listeBlanche->horizontalHeader()->sectionSize(col);
-        }
+    int tailleVerticaleListeBlanche = 0;
+    for (int row = 0; row < ui->listeBlanche->rowCount(); ++row) {
+        tailleVerticaleListeBlanche += ui->listeBlanche->verticalHeader()->sectionSize(row);
+    }
 
-        int tailleVerticaleListeBlanche = 0;
-        for (int row = 0; row < ui->listeBlanche->rowCount(); ++row) {
-            tailleVerticaleListeBlanche += ui->listeBlanche->verticalHeader()->sectionSize(row);
-        }
+    ui->listeBlanche->setMaximumWidth(tailleHorizontaleListeBlanche);
+    ui->listeBlanche->setMaximumHeight(tailleVerticaleListeBlanche);
 
-        ui->listeBlanche->setMaximumWidth(tailleHorizontaleListeBlanche);
-        ui->listeBlanche->setMaximumHeight(tailleVerticaleListeBlanche);
+    int tailleHorizontaleListeNoire = 0;
+    for (int col = 0; col < ui->listeNoire->columnCount(); ++col) {
+        tailleHorizontaleListeNoire += ui->listeNoire->horizontalHeader()->sectionSize(col);
+    }
 
-        int tailleHorizontaleListeNoire = 0;
-        for (int col = 0; col < ui->listeNoire->columnCount(); ++col) {
-            tailleHorizontaleListeNoire += ui->listeNoire->horizontalHeader()->sectionSize(col);
-        }
+    int tailleVerticaleListeNoire = 0;
+    for (int row = 0; row < ui->listeNoire->rowCount(); ++row) {
+        tailleVerticaleListeNoire += ui->listeNoire->verticalHeader()->sectionSize(row);
+    }
+    for (int row = 0; row < ui->tableWidget->rowCount(); ++row) {
+        for (int col = 0; col < ui->tableWidget->columnCount(); ++col) {
+            QTableWidgetItem* item = new QTableWidgetItem;
+            ui->tableWidget->setItem(row, col, item);
 
-        int tailleVerticaleListeNoire = 0;
-        for (int row = 0; row < ui->listeNoire->rowCount(); ++row) {
-            tailleVerticaleListeNoire += ui->listeNoire->verticalHeader()->sectionSize(row);
-        }
-        for (int row = 0; row < ui->tableWidget->rowCount(); ++row) {
-            for (int col = 0; col < ui->tableWidget->columnCount(); ++col) {
-                QTableWidgetItem* item = new QTableWidgetItem;
-                ui->tableWidget->setItem(row, col, item);
-
-                // Set the background color for the black squares
-                if ((row + col) % 2 != 0) {
-                    item->setBackground(QBrush(QColor(0, 0, 0))); // Set the background color to black
-                }
+            // Set the background color for the black squares
+            if ((row + col) % 2 != 0) {
+                item->setBackground(QBrush(QColor(0, 0, 0))); // Set the background color to black
             }
         }
+    }
 
-        ui->listeNoire->setMaximumWidth(tailleHorizontaleListeNoire);
-        ui->listeNoire->setMaximumHeight(tailleVerticaleListeNoire);
+    ui->listeNoire->setMaximumWidth(tailleHorizontaleListeNoire);
+    ui->listeNoire->setMaximumHeight(tailleVerticaleListeNoire);
 
-        ui->tableWidget->setSelectionMode(QAbstractItemView::NoSelection);
-        ui->resetButton->setStyleSheet("background : rgba(94,94,94)");
-
-
-
+    ui->tableWidget->setSelectionMode(QAbstractItemView::NoSelection);
+    ui->resetButton->setStyleSheet("background : rgba(94,94,94)");
 
 
-        ui->listeBlanche->setIconSize(QSize(25, 25));
-        ui->listeNoire->setIconSize(QSize(25, 25));
 
-        QString message = QString("Turn : <font color = #FF7676 > White < / font>");
 
-        //ui->tourRole->setText(message);
-        for (int row = 0; row < ui->tableWidget->rowCount(); ++row) {
-            for (int col = 0; col < ui->tableWidget->columnCount(); ++col) {
-                QTableWidgetItem* item = new QTableWidgetItem;
-                ui->tableWidget->setItem(row, col, item);
-            }
+
+    ui->listeBlanche->setIconSize(QSize(25, 25));
+    ui->listeNoire->setIconSize(QSize(25, 25));
+
+    //QString message = QString("Turn : <font color = #FF7676 > White < / font>");
+
+    //ui->tourRole->setText(message);
+    for (int row = 0; row < ui->tableWidget->rowCount(); ++row) {
+        for (int col = 0; col < ui->tableWidget->columnCount(); ++col) {
+            QTableWidgetItem* item = new QTableWidgetItem;
+            ui->tableWidget->setItem(row, col, item);
         }
+    }
 
-        mettreLeToutEnNoir();
+    mettreLeToutEnNoir();
 
-        ui->tableWidget->viewport()->update();
+    ui->tableWidget->viewport()->update();
 
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 2; j++) {
+            QTableWidgetItem* itemBlanc = new QTableWidgetItem;
+            itemBlanc->setIcon(QIcon());
+            QTableWidgetItem* itemNoir = new QTableWidgetItem;
+            itemNoir->setIcon(QIcon());
+            ui->listeBlanche->setItem(i, j, itemBlanc);
+            ui->listeNoire->setItem(i, j, itemNoir);
+        }
+    }
 }
-/*
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 2; j++) {
-                QTableWidgetItem* itemBlanc = new QTableWidgetItem;
-                itemBlanc->setIcon(QIcon());
-                QTableWidgetItem* itemNoir = new QTableWidgetItem;
-                itemNoir->setIcon(QIcon());
-                ui->listeBlanche->setItem(i, j, itemBlanc);
-                ui->listeNoire->setItem(i, j, itemNoir);
-            }
-        }*/
+
+void MainWindowEchec::deplacementPiece(int row, int col) {
+    QTableWidgetItem* currentItem = ui->tableWidget->item(row, col);
+
+    // Check if it's the first click (source cell)
+    if (premierClic) {
+        // Store the source position and set premierClic to false
+        sourcePosition = QPoint(row, col);
+        premierClic = false;
+    }
+    else {
+        // Move the piece by swapping the QTableWidgetItem contents
+        QTableWidgetItem* sourceItem = ui->tableWidget->item(sourcePosition.x(), sourcePosition.y());
+        currentItem->setIcon(sourceItem->icon());
+        currentItem->setText(sourceItem->text());
+        sourceItem->setIcon(QIcon());
+        sourceItem->setText("");
+
+        // Reset premierClic
+        premierClic = true;
+    }
+}
  
 
 void MainWindowEchec::MakeActive(){
@@ -192,6 +203,10 @@ void MainWindowEchec::remettreJeuxInitiale() {
        // ui->tableWidget->item(0, 4)->setIcon(QIcon("RoiBleu.png"));
         ui->tableWidget->item(0, 4)->setText("Patrice le Roi");
         ui->tableWidget->item(7, 3)->setText("Francis le Roi");
+        ui->tableWidget->item(1, 5)->setText("Pion Blanc");
+        ui->tableWidget->item(1, 6)->setText("Pion Noir");
+        ui->tableWidget->item(0, 0)->setText("Tour");
+        ui->tableWidget->item(7, 7)->setText("Tour");
             
 
         //ui->tableWidget->item(7, 4)->setIcon(QIcon(":/Ressource/image/roiNoir.png"));

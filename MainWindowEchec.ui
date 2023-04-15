@@ -49,23 +49,23 @@
    <widget class="QPushButton" name="resetButton">
     <property name="geometry">
      <rect>
-      <x>590</x>
-      <y>260</y>
+      <x>690</x>
+      <y>130</y>
       <width>80</width>
       <height>24</height>
      </rect>
     </property>
     <property name="text">
-     <string>Finir partie</string>
+     <string>Afficher Pieces</string>
     </property>
    </widget>
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>290</y>
-      <width>161</width>
-      <height>171</height>
+      <x>680</x>
+      <y>390</y>
+      <width>111</width>
+      <height>81</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout"/>
@@ -74,7 +74,7 @@
     <property name="geometry">
      <rect>
       <x>360</x>
-      <y>290</y>
+      <y>320</y>
       <width>256</width>
       <height>192</height>
      </rect>

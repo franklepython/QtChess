@@ -31,7 +31,7 @@ public:
 
 public slots:
 
-    //void deplacementPiece(int x, int y);
+    void deplacementPiece(int x, int y);
     void resizeEvent(QResizeEvent*);
     void remettreJeuxInitiale();
     void MakeActive();
@@ -44,10 +44,7 @@ signals:
     void echec();
 
 private:
-    void eliminationPieceVue(shared_ptr<Piece> pieceAttaquante,shared_ptr<Piece> pieceAttaquee);
-    bool caseNoir(Position position);
-    void coloriageCaseValide(Position positionPieceSelectionne); 
-    void coloriageCaseInvalide(Position positionPieceSelectionne); // utiliser en parallele avec remettreCouleurCaseAvant
+    QPoint sourcePosition;
     //void remettreCouleurCaseAvant();
     void initialisationFenetre();
     //void mouvementValide(shared_ptr<Piece> piece, Position position, bool castling, shared_ptr<Piece> tour);
