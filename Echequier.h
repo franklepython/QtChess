@@ -11,11 +11,11 @@
 
 using namespace std;
 
-
-// Modele
+// Cette classe et son .cpp ne servent a rien pour l'instant.
 class Echequier
 {
 public:
+/*
     vector<vector<shared_ptr<Piece>>> listeEquipeBlanc;
     vector<vector<shared_ptr<Piece>>> listeEquipeNoir;
 
@@ -28,9 +28,10 @@ public:
     vector<vector<shared_ptr<Piece>>> getTableauEchec() const;
 
     //bool mouvementPiece(shared_ptr<Piece>& piece, Position position);
-    const shared_ptr<Piece> getPiece(int x, int y);
+    const shared_ptr<Piece> getPiece(int x, int y);*/
 
 private:
+/*
     friend class Piece;
 
     vector<vector<shared_ptr<Piece>>> tableauEchec; // tableau 2D avec dimensions specifiees dans le constructeur (8x8)
@@ -39,9 +40,9 @@ private:
     inline static unique_ptr<Echequier> plateau = nullptr; 
 
 
-    Echequier();
+    //Echequier();
     void initialisationJeu();
     void initialisationPosition(Position poisition, shared_ptr<Piece> piece);
     void reinitialiseJeu();
-    //void eliminationPiece(Position position);
+    //void eliminationPiece(Position position);*/
 };

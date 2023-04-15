@@ -4,7 +4,7 @@
 #include "Roi.h"
 #include <iostream>
 #include <string>
-
+/*Logique des pieces, travail en cours, sert a rien pour l'instant
 unique_ptr<Echequier> Echequier::getEchequier(){
     if (plateau == nullptr)
         plateau = make_unique<Echequier>(Echequier());
@@ -15,26 +15,6 @@ unique_ptr<Echequier> Echequier::getEchequier(){
 vector<vector<shared_ptr<Piece>>> Echequier:: getTableauEchec() const {
     return tableauEchec;
 }
-
-/*bool Echequier::mouvementPiece(shared_ptr<Piece>& piece, Position position){
-    Position anciennePosition = piece->getPosition();
-    auto autrePiece = tableauEchec[position.x][position.y];
-
-    if (tableauEchec[position.x][position.y] != nullptr and test == false) {
-        eliminationPiece(position);
-
-
-    }
-
-    tableauEchec[anciennePosition.x][anciennePosition.y] = nullptr;
-    tableauEchec[position.x][position.y] = piece;
-
-    piece->position_ = position;
-
-    return true;
-}*/
-
-
 
 void Echequier::initialisationJeu()
 {
@@ -59,7 +39,7 @@ void Echequier::reinitialiseJeu() {
     initialisationPosition({ 0,5 }, Roi::Roi::roiNoir);
 }
 
-
+/*
 Echequier::Echequier() {
     tableauEchec.resize(8);
     tableauNul.resize(8);
@@ -88,3 +68,4 @@ Echequier::Echequier() {
 Echequier::~Echequier() {
     cout << "Echequier detruit" << endl;
 }
+*/

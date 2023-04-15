@@ -6,7 +6,7 @@
 
 #include <Piece.h>
 #include <Ajout.h>
-
+//sert a rien pour l'instant
 Pion::Pion(Position position, Couleur couleur, string symbole) : Piece(position, couleur, symbole) {
 	estPion = true;
 }
@@ -22,4 +22,5 @@ bool Pion::mouvementPion(Position posFinale, vector<vector<shared_ptr<Piece>>>& 
 		positionValide = (position_.y - 1 == posFinale.y);
 		return true;
 	}
+	return false;
 }

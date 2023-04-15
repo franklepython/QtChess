@@ -32,33 +32,21 @@ public:
 public slots:
 
     void deplacementPiece(int x, int y);
-    void resizeEvent(QResizeEvent*);
     void remettreJeuxInitiale();
     void MakeActive();
-    bool couleurDifferentes(shared_ptr<Piece> const piece1, shared_ptr<Piece> const piece2) const;
 
-    //void promotionNoir(int x, int y);
-    //void promotionBlanc(int x, int y);
-    //void promotion(int x, int y, bool listeBlanche);
 signals:
     void echec();
 
 private:
-    QPoint sourcePosition;
-    //void remettreCouleurCaseAvant();
+    QPoint positionInitiale;
     void initialisationFenetre();
-    //void mouvementValide(shared_ptr<Piece> piece, Position position, bool castling, shared_ptr<Piece> tour);
 
-    //void verificationEchec();
-
-    //void effetMusiqueDeplacement();
     string listeChoisi = "";
 
     Position positionPieceSelectionne;
     bool premierClic = true;
-    bool tourBlanc = true;
-    shared_ptr<Echequier> plateau = Echequier::getEchequier();
-    vector<Position> listeCaseColoriee;
+    //shared_ptr<Echequier> plateau = Echequier::getEchequier();
     shared_ptr<Piece> pieceSelectionne = nullptr;
 
 
